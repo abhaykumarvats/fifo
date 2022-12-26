@@ -2,21 +2,12 @@
   // External dependencies
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import { browser } from "$app/environment";
 
   // Types
   type ItemType = {
     id: string;
     value: string;
-  };
-
-  // Utils
-  const syncWithLocalStorage = (id: string, items: ItemType[]) => {
-    const currentState = localStorage.getItem("fifo");
-
-    if (currentState) {
-      const newState = { ...JSON.parse(currentState), [id]: items };
-      localStorage.setItem("fifo", JSON.stringify(newState));
-    } else localStorage.setItem("fifo", JSON.stringify({ [id]: items }));
   };
 
   // State
@@ -27,6 +18,18 @@
   let newItemValue = "";
   let error = "";
   $: if (qName || qItems.length) error = "";
+
+  // Utils
+  const syncWithLocalStorage = () => {
+    const id = crypto.randomUUID();
+    const newQ = { id, name: qName, items: qItems };
+    const currentState = window.localStorage.getItem("fifo");
+
+    if (currentState) {
+      const newState = [...JSON.parse(currentState), newQ];
+      window.localStorage.setItem("fifo", JSON.stringify(newState));
+    } else window.localStorage.setItem("fifo", JSON.stringify([newQ]));
+  };
 
   // Lifecycle
   onMount(() => qNameInput.focus());
@@ -60,7 +63,7 @@
       return;
     }
 
-    syncWithLocalStorage(crypto.randomUUID(), qItems);
+    browser && syncWithLocalStorage();
     goto("/");
   };
 </script>

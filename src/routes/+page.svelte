@@ -1,26 +1,15 @@
-<script>
-  let queues = [
-    {
-      id: 0,
-      name: "q1",
-      items: [
-        {
-          name: "hello",
-          order: 0,
-        },
-      ],
-    },
-    {
-      id: 1,
-      name: "q2",
-      items: [
-        {
-          name: "world",
-          order: 0,
-        },
-      ],
-    },
-  ];
+<script lang="ts">
+  import { browser } from "$app/environment";
+
+  // Local dependencies
+  import type { QueuesType } from "../types";
+
+  // State
+  let queues: QueuesType = [];
+  if (browser) {
+    const localState = window.localStorage.getItem("fifo");
+    if (localState) queues = JSON.parse(localState);
+  }
 </script>
 
 <a href="/new">+ create new</a>
@@ -31,5 +20,7 @@
     <li>
       {name}
     </li>
+  {:else}
+    <li>no queues found</li>
   {/each}
 </ul>
