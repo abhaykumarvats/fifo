@@ -8,5 +8,5 @@
   const { id, name, items } = data;
 </script>
 
-<h1>edit queue</h1>
+<h3>edit queue</h3>
 <AddEditQ editMode={true} editId={id} editName={name} editItems={items} />
