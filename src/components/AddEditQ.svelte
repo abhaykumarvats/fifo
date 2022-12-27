@@ -75,8 +75,9 @@
 </script>
 
 <input
+  class="p-4 bg-transparent border-2 border-orange-600 focus:outline-none rounded-xl text-orange-600"
   type="text"
-  placeholder="enter queue name"
+  placeholder="Enter Queue Name"
   bind:this={qNameInput}
   bind:value={qName}
   on:keypress={({ key }) => key === "Enter" && newItemInput.focus()}
@@ -90,32 +91,25 @@
   {/each}
 </ul>
 
-<div class="flex">
+<div class="flex gap-2">
   <input
+    class="w-full p-4 bg-transparent border-2 border-orange-600 focus:outline-none rounded-xl text-orange-600"
     type="text"
-    placeholder="enter item"
+    placeholder="Enter Item"
     bind:this={newItemInput}
     bind:value={newItemValue}
     on:keypress={({ key }) => key === "Enter" && handleItemAdd()}
   />
-  <button class="flex items-center" on:click={handleItemAdd}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      class="w-5 h-5"
-    >
-      <path
-        d="M10.75 6.75a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z"
-      />
-    </svg>
-    add item
-  </button>
+  <button
+    class="inline-block w-fit text-center text-xl bg-orange-600 text-orange-50 rounded-xl px-4 font-bold"
+    on:click={handleItemAdd}>Add&nbsp;+</button
+  >
 </div>
 
-<div class="flex">
-  <button on:click={handleQueueSave}>save</button>
-  {#if error}
-    <p class="text-red-500">{error}</p>
-  {/if}
-</div>
+<button
+  class="inline-block w-full text-center text-xl bg-orange-600 text-orange-50 rounded-xl py-3 font-bold"
+  on:click={handleQueueSave}>Save</button
+>
+{#if error}
+  <p class="text-red-500 capitalize text-center">{error}</p>
+{/if}

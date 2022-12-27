@@ -12,58 +12,57 @@
   }
 </script>
 
-<a class="flex items-center" href="/new">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-    class="w-5 h-5"
-  >
-    <path
-      d="M10.75 6.75a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z"
-    />
-  </svg>
-  create new
+<a
+  class="inline-block w-full text-center text-xl bg-orange-600 text-orange-50 rounded-xl py-3 font-bold"
+  href="/new"
+>
+  New +
 </a>
 
-<h3>my queues</h3>
-<ul>
-  {#each queues as { id, name } (id)}
-    <li class="flex items-center">
-      <a href="/edit/{id}">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="w-5 h-5"
-        >
-          <path
-            d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z"
-          />
-          <path
-            d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z"
-          />
-        </svg>
-      </a>
+<div class="w-full h-1 border-dashed border-t-4 border-orange-200" />
 
-      {name}
+<div class="flex flex-col gap-2">
+  <h2 class="text-2xl font-semibold text-orange-600">My Queues</h2>
+  <ul>
+    {#each queues as { id, name } (id)}
+      <li
+        class="flex items-center justify-between p-4 border-orange-600 border-solid border-4 rounded-xl text-orange-600 mb-4 font-semibold text-xl"
+      >
+        <a href="/edit/{id}">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z"
+            />
+            <path
+              d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z"
+            />
+          </svg>
+        </a>
 
-      <a href="/use/{id}">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="w-5 h-5"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </a>
-    </li>
-  {:else}
-    <li>no queues found</li>
-  {/each}
-</ul>
+        {name}
+
+        <a href="/use/{id}">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </a>
+      </li>
+    {:else}
+      <li>no queues found</li>
+    {/each}
+  </ul>
+</div>
