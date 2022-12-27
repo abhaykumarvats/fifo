@@ -18,7 +18,7 @@
 <ul>
   {#each queues as { id, name } (id)}
     <li>
-      {name}
+      <a href="/edit/{id}">{name}</a>
     </li>
   {:else}
     <li>no queues found</li>
