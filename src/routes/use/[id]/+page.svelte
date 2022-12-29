@@ -53,6 +53,12 @@
             />
           </svg>
         </button>
+      {:else if index === 2}
+        <span
+          class="text-xs bg-orange-600 text-orange-50 rounded-full px-2 py-1"
+        >
+          Next
+        </span>
       {/if}
     </li>
   {/each}
