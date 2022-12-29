@@ -1,7 +1,6 @@
 <script lang="ts">
+  // Dependencies
   import { browser } from "$app/environment";
-
-  // Local dependencies
   import type { QueuesType } from "../types";
 
   // State
@@ -10,6 +9,14 @@
     const localState = window.localStorage.getItem("fifo");
     if (localState) queues = JSON.parse(localState);
   }
+
+  // Handlers
+  const handleClearAll = () => {
+    if (browser) {
+      queues = [];
+      localStorage.removeItem("fifo");
+    }
+  };
 </script>
 
 <a
@@ -22,7 +29,15 @@
 <div class="w-full h-1 border-dashed border-t-4 border-orange-200" />
 
 <div class="flex flex-col gap-2">
-  <h2 class="text-2xl font-semibold text-orange-600">My Queues</h2>
+  <h2
+    class="text-2xl font-semibold text-orange-600 flex justify-between items-center"
+  >
+    My Queues
+    <button
+      class="border-4 border-orange-600 rounded-xl px-2"
+      on:click={handleClearAll}>Clear All</button
+    >
+  </h2>
   <ul>
     {#each queues as { id, name } (id)}
       <li
@@ -62,7 +77,11 @@
         </a>
       </li>
     {:else}
-      <li>no queues found</li>
+      <li
+        class="text-xl text-orange-600 text-center font-semibold p-4 border-orange-600 border-4 rounded-xl"
+      >
+        No Queues Found
+      </li>
     {/each}
   </ul>
 </div>
