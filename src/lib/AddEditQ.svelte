@@ -1,10 +1,10 @@
 <script lang="ts">
   // Dependencies
-  import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
-  import type { ItemType, QueueType } from "src/types";
+  import type { ItemType, QueueType } from "$lib/types";
   import { slide } from "svelte/transition";
+  import { CrossIcon, PlusIcon, SaveIcon } from "./icons";
 
   // Props
   export let editMode = false;
@@ -13,7 +13,6 @@
   export let editItems: ItemType[] = [];
 
   // State
-  let qNameInput: HTMLInputElement;
   let qName = editName;
   let qItems: ItemType[] = editItems;
   let newItemInput: HTMLInputElement;
@@ -73,42 +72,35 @@
 </script>
 
 <input
-  class="p-4 bg-transparent border-4 border-orange-600 focus:outline-none rounded-xl text-orange-600"
+  class="outlined focus:outline-none text-left py-1"
   type="text"
   placeholder="Enter Queue Name"
-  bind:this={qNameInput}
   bind:value={qName}
   on:keypress={({ key }) => key === "Enter" && newItemInput.focus()}
 />
 
-<ul class="flex flex-col gap-2">
-  {#each qItems as { id, value } (id)}
-    <li
-      class="text-xl text-orange-600 text-center font-semibold p-4 border-orange-600 border-2 rounded-xl flex items-center justify-between"
-      transition:slide|local
-    >
-      {value}
-      <button on:click={() => handleItemDelete(id)}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="w-6 h-6"
+{#if qItems.length}
+  <ul class="flex flex-col gap-2 ml-8" transition:slide|local>
+    {#each qItems as { id, value } (id)}
+      <li
+        class="outlined flex items-center justify-between"
+        transition:slide|local
+      >
+        <span class="font-bold">{value}</span>
+        <button
+          class="flex items-center gap-2"
+          on:click={() => handleItemDelete(id)}
         >
-          <path
-            fill-rule="evenodd"
-            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </button>
-    </li>
-  {/each}
-</ul>
+          Remove {@html CrossIcon}
+        </button>
+      </li>
+    {/each}
+  </ul>
+{/if}
 
 <div class="flex gap-2">
   <input
-    class="w-full p-4 bg-transparent border-4 border-orange-600 focus:outline-none rounded-xl text-orange-600"
+    class="outlined w-full focus:outline-none text-left py-1"
     type="text"
     placeholder="Enter Item"
     bind:this={newItemInput}
@@ -116,15 +108,19 @@
     on:keypress={({ key }) => key === "Enter" && handleItemAdd()}
   />
   <button
-    class="inline-block w-fit text-center text-xl bg-orange-600 text-orange-50 rounded-xl px-4 font-bold"
-    on:click={handleItemAdd}>Add&nbsp;+</button
+    class="filled w-fit py-1 flex items-center gap-2"
+    on:click={handleItemAdd}
   >
+    Add {@html PlusIcon}
+  </button>
 </div>
 
 <button
-  class="inline-block w-full text-center text-xl bg-orange-600 text-orange-50 rounded-xl py-3 font-bold"
-  on:click={handleQueueSave}>Save</button
+  class="filled w-full flex items-center justify-center gap-2"
+  on:click={handleQueueSave}
 >
+  Save {@html SaveIcon}
+</button>
 {#if error}
   <p class="text-red-500 capitalize text-center">{error}</p>
 {/if}

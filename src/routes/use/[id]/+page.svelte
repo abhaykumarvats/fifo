@@ -1,8 +1,10 @@
 <script lang="ts">
   // Dependencies
   import type { PageData } from "./$types";
-  import type { ItemType, QueueType } from "src/types";
+  import type { ItemType, QueueType } from "$lib/types";
   import { browser } from "$app/environment";
+  import Divider from "$lib/Divider.svelte";
+  import { BarsArrowDownIcon, RoundArrowUpIcon } from "$lib/icons";
 
   // Props
   export let data: PageData;
@@ -30,36 +32,28 @@
   };
 </script>
 
-<div class="w-full h-1 border-dashed border-t-4 border-orange-200" />
-<h2 class="text-orange-600 text-2xl font-bold">{name ?? "loading..."}</h2>
+<Divider />
+
+<h2>{name ?? "loading..."}</h2>
+
 <ul class="flex flex-col gap-2">
   {#each items as { id, value }, index (id)}
-    <li
-      class="flex items-center text-xl text-orange-600 text-center font-semibold p-4 border-orange-600 border-4 rounded-xl justify-between"
-    >
-      {value}
+    <li class="outlined flex items-center justify-between">
+      <span class="font-bold">{value}</span>
       {#if [0, 1].includes(index)}
-        <button on:click={() => handleClick(index)}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M20.03 4.72a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 11.69l6.97-6.97a.75.75 0 011.06 0zm0 6a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 111.06-1.06L12 17.69l6.97-6.97a.75.75 0 011.06 0z"
-              clip-rule="evenodd"
-            />
-          </svg>
+        <button
+          class="filled py-1 text-sm flex items-center gap-2"
+          on:click={() => handleClick(index)}
+        >
+          Send to Last {@html BarsArrowDownIcon}
         </button>
       {:else if index === 2}
-        <span
-          class="text-xs bg-orange-600 text-orange-50 rounded-full px-2 py-1"
-        >
-          Next
-        </span>
+        <span class="text-sm italic mr-2">Up Next</span>
       {/if}
     </li>
+
+    {#if [1, 2].includes(index)}
+      <li class="my-4 w-1/2 m-auto"><Divider /></li>
+    {/if}
   {/each}
 </ul>

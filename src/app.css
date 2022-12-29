@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-orange-50 text-orange-600
+  }
+
+  h1 {
+    @apply text-4xl text-center font-bold
+  }
+
+  h2 {
+    @apply text-2xl font-semibold
+  }
+
+  .filled {
+    @apply inline-block text-center text-xl bg-orange-600 text-orange-50 rounded-full p-3
+  }
+
+  .outlined {
+    @apply inline-block text-center text-xl rounded-full p-3 text-orange-600 bg-orange-50 border-4 border-orange-600
+  }
+}
+
