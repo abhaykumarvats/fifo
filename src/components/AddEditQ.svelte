@@ -38,9 +38,6 @@
     } else window.localStorage.setItem("fifo", JSON.stringify([newQ]));
   };
 
-  // Lifecycle
-  onMount(() => qNameInput.focus());
-
   // Handlers
   const handleItemAdd = () => {
     if (!newItemValue) return;
