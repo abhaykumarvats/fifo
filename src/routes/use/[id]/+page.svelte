@@ -30,22 +30,25 @@
   };
 </script>
 
-<h3>{name ?? "loading..."}</h3>
-<ul>
+<div class="w-full h-1 border-dashed border-t-4 border-orange-200" />
+<h2 class="text-orange-600 text-2xl font-bold">{name ?? "loading..."}</h2>
+<ul class="flex flex-col gap-2">
   {#each items as { id, value }, index (id)}
-    <li class="flex items-center">
+    <li
+      class="flex items-center text-xl text-orange-600 text-center font-semibold p-4 border-orange-600 border-4 rounded-xl justify-between"
+    >
       {value}
       {#if [0, 1].includes(index)}
         <button on:click={() => handleClick(index)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
+            viewBox="0 0 24 24"
             fill="currentColor"
-            class="w-5 h-5"
+            class="w-6 h-6"
           >
             <path
               fill-rule="evenodd"
-              d="M14.77 4.21a.75.75 0 01.02 1.06l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 011.08-1.04L10 8.168l3.71-3.938a.75.75 0 011.06-.02zm0 6a.75.75 0 01.02 1.06l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 111.08-1.04L10 14.168l3.71-3.938a.75.75 0 011.06-.02z"
+              d="M20.03 4.72a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 11.69l6.97-6.97a.75.75 0 011.06 0zm0 6a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 111.06-1.06L12 17.69l6.97-6.97a.75.75 0 011.06 0z"
               clip-rule="evenodd"
             />
           </svg>
