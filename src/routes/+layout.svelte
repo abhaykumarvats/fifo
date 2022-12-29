@@ -19,5 +19,12 @@
     🧡
   </span>
   in India by
-  <a class="underline" href="https://github.com/abhaykv04">Abhay</a>
+  <a
+    class="underline"
+    href="https://github.com/abhaykv04"
+    target="_blank"
+    rel="noreferrer"
+  >
+    Abhay
+  </a>
 </footer>
