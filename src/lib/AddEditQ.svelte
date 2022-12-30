@@ -11,6 +11,7 @@
   export let editId: string = "";
   export let editName = "";
   export let editItems: ItemType[] = [];
+  export let editCounters = false;
 
   // State
   let qName = editName;
@@ -18,12 +19,15 @@
   let newItemInput: HTMLInputElement;
   let newItemValue = "";
   let error = "";
+  let counters = editCounters;
+
+  // Reactive state
   $: if (qName || qItems.length) error = "";
 
   // Utils
   const syncWithLocalStorage = () => {
     const qId = editId || crypto.randomUUID();
-    const newQ = { id: qId, name: qName, items: qItems };
+    const newQ = { id: qId, name: qName, items: qItems, counters };
     const currentState = window.localStorage.getItem("fifo");
 
     if (currentState) {
@@ -114,6 +118,15 @@
     Add {@html PlusIcon}
   </button>
 </div>
+
+<label class="text-xl flex items-center gap-2 cursor-pointer">
+  <input
+    class="appearance-none outlined checked:filled p-2 checked:p-2"
+    type="checkbox"
+    bind:checked={counters}
+  />
+  Add Counters
+</label>
 
 <button
   class="filled w-full flex items-center justify-center gap-2"

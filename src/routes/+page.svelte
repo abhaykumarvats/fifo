@@ -30,7 +30,7 @@
 <h2 class="flex justify-between items-center">
   My Queues
   <button
-    class="filled py-1 font-normal flex items-center gap-2"
+    class="filled py-1 text-base font-normal flex items-center gap-2"
     on:click={handleDeleteAll}
   >
     Delete All {@html DangerIcon}
