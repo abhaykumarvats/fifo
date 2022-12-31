@@ -1,7 +1,7 @@
 <script lang="ts">
   // Dependencies
   import type { PageData } from "./$types";
-  import type { CheckedCountersType, ItemType, QueueType } from "$lib/types";
+  import type { ItemType, QueueType, ValuesType } from "$lib/types";
   import { browser } from "$app/environment";
   import Divider from "$lib/Divider.svelte";
   import { BarsArrowDownIcon } from "$lib/icons";
@@ -11,10 +11,10 @@
 
   // State
   let { id, name, items = [], counters } = data as QueueType;
-  $: checkedCounters = {
-    [items[0]?.id]: [],
-    [items[1]?.id]: [],
-  } as CheckedCountersType;
+  $: values = {
+    [items[0]?.id]: 0,
+    [items[1]?.id]: 0,
+  } as ValuesType;
 
   // Utils
   const syncWithLocalStorage = () => {
@@ -35,11 +35,8 @@
     browser && syncWithLocalStorage();
   };
 
-  const handleCounterClick = (id: string, counter: number) => {
-    const currentCounters = checkedCounters[id];
-    if (currentCounters.includes(counter)) return;
-    currentCounters.push(counter);
-    checkedCounters[id] = currentCounters;
+  const handleCounterClick = (id: string) => {
+    values[id] = values[id] + 1;
   };
 </script>
 
@@ -55,20 +52,12 @@
       {#if [0, 1].includes(index)}
         <span class="flex gap-4">
           {#if counters}
-            <span class="flex gap-2">
-              {#each [1, 2, 3] as counter}
-                <span
-                  class="cursor-pointer {checkedCounters[id].includes(counter)
-                    ? 'filled border-4 border-orange-600 cursor-not-allowed'
-                    : 'outlined'}"
-                  role="checkbox"
-                  aria-checked={checkedCounters[id].includes(counter)}
-                  on:click={() => handleCounterClick(id, counter)}
-                  on:keypress={({ code }) =>
-                    code === "Space" && handleCounterClick(id, counter)}
-                />
-              {/each}
-            </span>
+            <button
+              class="filled py-1 w-9 h-9 flex justify-center items-center"
+              on:click={() => handleCounterClick(id)}
+            >
+              {values[id]}
+            </button>
           {/if}
 
           <button

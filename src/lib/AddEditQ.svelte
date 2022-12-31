@@ -125,7 +125,7 @@
     type="checkbox"
     bind:checked={counters}
   />
-  Add Counters
+  Add Counter
 </label>
 
 <button

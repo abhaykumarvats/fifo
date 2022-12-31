@@ -12,6 +12,6 @@ export type QueueType = {
 
 export type QueuesType = QueueType[] | [];
 
-export type CheckedCountersType = {
-  [x: string]: number[];
+export type ValuesType = {
+  [x: string]: number;
 };
