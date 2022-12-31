@@ -42,10 +42,14 @@
 
 <Divider />
 
-<h2>{name ?? "loading..."}</h2>
+<h2>{name ?? "Loading..."}</h2>
 
 <ul class="flex flex-col gap-2">
   {#each items as { id, value }, index (id)}
+    {#if [2, 3].includes(index)}
+      <li class="my-4 w-1/2 m-auto"><Divider /></li>
+    {/if}
+
     <li class="outlined flex items-center justify-between">
       <span class="font-bold">{value}</span>
 
@@ -60,20 +64,18 @@
             </button>
           {/if}
 
-          <button
-            class="filled py-1 text-sm flex items-center gap-2"
-            on:click={() => handleSendLast(index)}
-          >
-            Send to Last {@html BarsArrowDownIcon}
-          </button>
+          {#if items.length > 2}
+            <button
+              class="filled py-1 text-sm flex items-center gap-2"
+              on:click={() => handleSendLast(index)}
+            >
+              Send to Last {@html BarsArrowDownIcon}
+            </button>
+          {/if}
         </span>
       {:else if index === 2}
         <span class="text-sm italic mr-2">Up Next</span>
       {/if}
     </li>
-
-    {#if [1, 2].includes(index)}
-      <li class="my-4 w-1/2 m-auto"><Divider /></li>
-    {/if}
   {/each}
 </ul>
