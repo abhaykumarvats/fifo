@@ -5,6 +5,9 @@
   import { browser } from "$app/environment";
   import Divider from "$lib/Divider.svelte";
   import { BarsArrowDownIcon } from "$lib/icons";
+  import { quintOut } from "svelte/easing";
+  import { crossfade } from "svelte/transition";
+  import { flip } from "svelte/animate";
 
   // Props
   export let data: PageData;
@@ -15,6 +18,8 @@
     [items[0]?.id]: 0,
     [items[1]?.id]: 0,
   } as ValuesType;
+  $: activeItems = items.filter((_, index) => [0, 1].includes(index));
+  $: inactiveItems = items.filter((_, index) => ![0, 1].includes(index));
 
   // Utils
   const syncWithLocalStorage = () => {
@@ -27,6 +32,23 @@
       window.localStorage.setItem("fifo", JSON.stringify(newState));
     }
   };
+
+  const [send, receive] = crossfade({
+    duration: 1000,
+    fallback(node) {
+      const style = getComputedStyle(node);
+      const transform = style.transform === "none" ? "" : style.transform;
+
+      return {
+        duration: 1000,
+        easing: quintOut,
+        css: (t) => `
+					transform: ${transform} scale(${t});
+					opacity: ${t}
+				`,
+      };
+    },
+  });
 
   // Handlers
   const handleSendLast = (index: number) => {
@@ -45,35 +67,53 @@
 <h2>{name ?? "Loading..."}</h2>
 
 <ul class="flex flex-col gap-2">
-  {#each items as { id, value }, index (id)}
-    {#if [2, 3].includes(index)}
-      <li class="my-4 w-1/2 m-auto"><Divider /></li>
-    {/if}
-
-    <li class="outlined flex items-center justify-between">
+  {#each activeItems as { id, value }, index (id)}
+    <li
+      class="outlined flex items-center justify-between"
+      in:receive|local={{ key: id }}
+      out:send|local={{ key: id }}
+      animate:flip
+    >
       <span class="font-bold">{value}</span>
 
-      {#if [0, 1].includes(index)}
-        <span class="flex gap-4">
-          {#if counters}
-            <button
-              class="filled py-1 w-7 h-7 flex justify-center items-center text-sm"
-              on:click={() => handleCounterClick(id)}
-            >
-              {values[id]}
-            </button>
-          {/if}
+      <span class="flex gap-4">
+        {#if counters}
+          <button
+            class="filled py-1 w-7 h-7 flex justify-center items-center text-sm"
+            on:click={() => handleCounterClick(id)}
+          >
+            {values[id]}
+          </button>
+        {/if}
 
-          {#if items.length > 2}
-            <button
-              class="filled py-1 text-sm flex items-center gap-2"
-              on:click={() => handleSendLast(index)}
-            >
-              Send to Last {@html BarsArrowDownIcon}
-            </button>
-          {/if}
-        </span>
-      {:else if index === 2}
+        {#if items.length > 2}
+          <button
+            class="filled py-1 text-sm flex items-center gap-2"
+            on:click={() => handleSendLast(index)}
+          >
+            Send to Last {@html BarsArrowDownIcon}
+          </button>
+        {/if}
+      </span>
+    </li>
+  {/each}
+</ul>
+
+{#if items.length > 2}
+  <div class="my-4 w-1/2 m-auto"><Divider /></div>
+{/if}
+
+<ul class="flex flex-col gap-2">
+  {#each inactiveItems as { id, value }, index (id)}
+    <li
+      class="outlined flex items-center justify-between"
+      in:receive|local={{ key: id }}
+      out:send|local={{ key: id }}
+      animate:flip
+    >
+      <span class="font-bold">{value}</span>
+
+      {#if index === 0}
         <span class="text-sm italic mr-2">Up Next</span>
       {/if}
     </li>
