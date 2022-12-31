@@ -53,7 +53,7 @@
         <span class="flex gap-4">
           {#if counters}
             <button
-              class="filled py-1 w-9 h-9 flex justify-center items-center"
+              class="filled py-1 w-7 h-7 flex justify-center items-center text-sm"
               on:click={() => handleCounterClick(id)}
             >
               {values[id]}
