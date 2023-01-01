@@ -1,7 +1,7 @@
 <script lang="ts">
   // Dependencies
   import type { PageData } from "./$types";
-  import type { ItemType, QueueType, ValuesType } from "$lib/types";
+  import type { ItemType, QueueType } from "$lib/types";
   import { browser } from "$app/environment";
   import Divider from "$lib/Divider.svelte";
   import { BarsArrowDownIcon, EditIcon } from "$lib/icons";
@@ -14,17 +14,14 @@
   export let data: PageData;
 
   // State
-  let { id, name, items = [], counters } = data as QueueType;
-  $: values = {
-    [items[0]?.id]: 0,
-    [items[1]?.id]: 0,
-  } as ValuesType;
+  let { id, name, items = [], showCounter } = data as QueueType;
+  items = items.map((item) => ({ ...item, count: 0 }));
   $: activeItems = items.filter((_, index) => [0, 1].includes(index));
   $: inactiveItems = items.filter((_, index) => ![0, 1].includes(index));
 
   // Utils
   const syncWithLocalStorage = () => {
-    const newQ = { id, name, items, counters };
+    const newQ = { id, name, items, showCounter };
     const currentState = window.localStorage.getItem("fifo");
 
     if (currentState) {
@@ -53,13 +50,17 @@
 
   // Handlers
   const handleSendLast = (index: number) => {
+    const itemToBeMoved = items[index];
     const newItems = items.filter((_: ItemType, i: number) => i !== index);
-    items = [...newItems, items[index]];
+    items = [...newItems, itemToBeMoved];
+    items[0].count = items[1].count = 0;
     browser && syncWithLocalStorage();
   };
 
   const handleCounterClick = (id: string) => {
-    values[id] = values[id] + 1;
+    items = items.map((item) =>
+      item.id === id ? { ...item, count: item.count + 1 } : item
+    );
   };
 </script>
 
@@ -73,7 +74,7 @@
 </div>
 
 <ul class="flex flex-col gap-2">
-  {#each activeItems as { id, value }, index (id)}
+  {#each activeItems as { id, value, count }, index (id)}
     <li
       class="outlined flex items-center justify-between"
       in:receive|local={{ key: id }}
@@ -83,12 +84,12 @@
       <span class="font-bold">{value}</span>
 
       <span class="flex gap-4">
-        {#if counters}
+        {#if showCounter}
           <button
             class="filled py-1 w-7 h-7 flex justify-center items-center text-sm"
             on:click={() => handleCounterClick(id)}
           >
-            {values[id]}
+            {count}
           </button>
         {/if}
 
@@ -110,7 +111,7 @@
 {/if}
 
 <ul class="flex flex-col gap-2">
-  {#each inactiveItems as { id, value }, index (id)}
+  {#each inactiveItems as { id, value, count }, index (id)}
     <li
       class="outlined flex items-center justify-between"
       in:receive|local={{ key: id }}
@@ -119,9 +120,17 @@
     >
       <span class="font-bold">{value}</span>
 
-      {#if index === 0}
-        <span class="text-sm italic mr-2">Up Next</span>
-      {/if}
+      <span class="flex items-center gap-2">
+        {#if index === 0}
+          <span class="text-sm italic mr-2">Up Next</span>
+        {/if}
+
+        {#if count}
+          <span class="outlined py-1 text-sm border-2">
+            Last Count | {count}
+          </span>
+        {/if}
+      </span>
     </li>
   {/each}
 </ul>

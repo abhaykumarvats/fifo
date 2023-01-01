@@ -1,13 +1,14 @@
 export type ItemType = {
   id: string;
   value: string;
+  count: number;
 };
 
 export type QueueType = {
   id: string;
   name: string;
   items: ItemType[];
-  counters: boolean;
+  showCounter: boolean;
 };
 
 export type QueuesType = QueueType[] | [];

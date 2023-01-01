@@ -8,37 +8,39 @@
 
   // Props
   export let editMode = false;
-  export let editId: string = "";
-  export let editName = "";
-  export let editItems: ItemType[] = [];
-  export let editCounters = false;
+  export let queueId = "";
+  export let queueName = "";
+  export let queueItems: ItemType[] = [];
+  export let queueShowCounter = false;
 
   // State
-  let qName = editName;
-  let qItems: ItemType[] = editItems;
+  let name = queueName;
+  let items = queueItems;
+  let showCounter = queueShowCounter;
   let newItemInput: HTMLInputElement;
   let newItemValue = "";
   let error = "";
-  let counters = editCounters;
 
   // Reactive state
-  $: if (qName || qItems.length) error = "";
+  $: if (name || items.length) error = "";
 
   // Utils
   const syncWithLocalStorage = () => {
-    const qId = editId || crypto.randomUUID();
-    const newQ = { id: qId, name: qName, items: qItems, counters };
+    const id = queueId || crypto.randomUUID();
+    const newQueue = { id, name, items, showCounter };
     const currentState = window.localStorage.getItem("fifo");
 
     if (currentState) {
       let newState = JSON.parse(currentState);
 
       if (editMode)
-        newState = newState.map((q: QueueType) => (q.id === qId ? newQ : q));
-      else newState = [...newState, newQ];
+        newState = newState.map((queue: QueueType) =>
+          queue.id === id ? newQueue : queue
+        );
+      else newState = [...newState, newQueue];
 
       window.localStorage.setItem("fifo", JSON.stringify(newState));
-    } else window.localStorage.setItem("fifo", JSON.stringify([newQ]));
+    } else window.localStorage.setItem("fifo", JSON.stringify([newQueue]));
   };
 
   // Handlers
@@ -48,24 +50,25 @@
     const newItem = {
       id: crypto.randomUUID(),
       value: newItemValue,
+      count: 0,
     };
 
-    qItems = [...qItems, newItem];
+    items = [...items, newItem];
     newItemValue = "";
     newItemInput.focus();
   };
 
   const handleItemDelete = (id: string) => {
-    qItems = qItems.filter((item) => item.id !== id);
+    items = items.filter((item) => item.id !== id);
   };
 
   const handleQueueSave = () => {
-    if (!qName) {
+    if (!name) {
       error = "please enter queue name";
       return;
     }
 
-    if (!qItems.length) {
+    if (!items.length) {
       error = "please add atleast one item";
       return;
     }
@@ -79,13 +82,13 @@
   class="outlined focus:outline-none text-left py-1"
   type="text"
   placeholder="Enter Queue Name"
-  bind:value={qName}
+  bind:value={name}
   on:keypress={({ key }) => key === "Enter" && newItemInput.focus()}
 />
 
-{#if qItems.length}
+{#if items.length}
   <ul class="flex flex-col gap-2 ml-8" transition:slide|local>
-    {#each qItems as { id, value } (id)}
+    {#each items as { id, value } (id)}
       <li
         class="outlined flex items-center justify-between"
         transition:slide|local
@@ -123,7 +126,7 @@
   <input
     class="appearance-none outlined checked:filled p-2 checked:p-2"
     type="checkbox"
-    bind:checked={counters}
+    bind:checked={showCounter}
   />
   Add Counter
 </label>

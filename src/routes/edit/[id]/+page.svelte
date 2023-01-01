@@ -8,7 +8,7 @@
 
   // Props
   export let data: PageData;
-  const { id, name, items, counters } = data;
+  const { id, name, items, showCounter } = data;
 </script>
 
 <Divider />
@@ -22,8 +22,8 @@
 
 <AddEditQ
   editMode={true}
-  editId={id}
-  editName={name}
-  editItems={items}
-  editCounters={counters}
+  queueId={id}
+  queueName={name}
+  queueItems={items}
+  queueShowCounter={showCounter}
 />
