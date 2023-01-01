@@ -4,10 +4,11 @@
   import type { ItemType, QueueType, ValuesType } from "$lib/types";
   import { browser } from "$app/environment";
   import Divider from "$lib/Divider.svelte";
-  import { BarsArrowDownIcon } from "$lib/icons";
+  import { BarsArrowDownIcon, EditIcon } from "$lib/icons";
   import { quintOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
   import { flip } from "svelte/animate";
+  import { goto } from "$app/navigation";
 
   // Props
   export let data: PageData;
@@ -64,7 +65,12 @@
 
 <Divider />
 
-<h2>{name ?? "Loading..."}</h2>
+<div class="flex items-center gap-2">
+  <h2>{name ?? "Loading..."}</h2>
+  <button on:click={() => goto(`/edit/${id}`)}>
+    {@html EditIcon}
+  </button>
+</div>
 
 <ul class="flex flex-col gap-2">
   {#each activeItems as { id, value }, index (id)}
