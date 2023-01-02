@@ -3,20 +3,59 @@
   import Divider from "$lib/Divider.svelte";
   import AddEditQ from "$lib/AddEditQ.svelte";
   import type { PageData } from "./$types";
-  import { ArrowRightIcon } from "$lib/icons";
+  import { ArrowRightIcon, DangerIcon } from "$lib/icons";
   import { goto } from "$app/navigation";
+  import { browser } from "$app/environment";
+  import type { QueueType } from "$lib/types";
 
   // Props
   export let data: PageData;
   const { id, name, items, showCounter } = data;
+
+  // State
+  let deleteButtonLabel = "";
+
+  // Utils
+  const syncWithLocalStorage = () => {
+    const currentState = localStorage.getItem("fifo");
+
+    if (currentState) {
+      const newState = JSON.parse(currentState).filter(
+        (queue: QueueType) => queue.id !== id
+      );
+
+      localStorage.setItem("fifo", JSON.stringify(newState));
+    }
+
+    goto("/");
+  };
+
+  // Handlers
+  const handleDelete = () => {
+    if (!deleteButtonLabel) {
+      deleteButtonLabel = "Sure?";
+      return;
+    }
+
+    browser && syncWithLocalStorage();
+  };
 </script>
 
 <Divider />
 
 <div class="flex justify-between">
-  <h2>Edit Queue</h2>
-  <button class="flex items-center gap-2" on:click={() => goto(`/use/${id}`)}>
-    Use {@html ArrowRightIcon}
+  <div class="flex gap-2">
+    <h2>Edit Queue</h2>
+    <button class="flex items-center gap-2" on:click={() => goto(`/use/${id}`)}>
+      {@html ArrowRightIcon}
+    </button>
+  </div>
+  <button
+    class="filled flex items-center gap-2 py-0 text-base"
+    on:click={handleDelete}
+  >
+    {deleteButtonLabel || "Delete"}
+    {@html DangerIcon}
   </button>
 </div>
 
