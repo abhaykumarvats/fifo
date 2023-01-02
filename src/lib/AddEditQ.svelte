@@ -47,6 +47,11 @@
   const handleItemAdd = () => {
     if (!newItemValue) return;
 
+    if (newItemValue.length > 10) {
+      error = "item name must be less than 10 characters";
+      return;
+    }
+
     const newItem = {
       id: crypto.randomUUID(),
       value: newItemValue,
@@ -65,6 +70,11 @@
   const handleQueueSave = () => {
     if (!name) {
       error = "please enter queue name";
+      return;
+    }
+
+    if (name.length > 10) {
+      error = "queue name must be less than 10 characters";
       return;
     }
 
