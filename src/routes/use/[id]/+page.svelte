@@ -120,7 +120,7 @@
     >
       <span class="font-bold">{value}</span>
 
-      <span class="flex items-center gap-2">
+      <span class="flex items-center">
         {#if index === 0}
           <span class="text-sm italic mr-2">Up Next</span>
         {/if}
