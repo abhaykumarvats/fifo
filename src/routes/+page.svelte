@@ -11,11 +11,18 @@
     const localState = window.localStorage.getItem("fifo");
     if (localState) queues = JSON.parse(localState);
   }
+  let deleteButtonLabel = "";
 
   // Handlers
   const handleDeleteAll = () => {
+    if (!deleteButtonLabel.length) {
+      deleteButtonLabel = "Sure?";
+      return;
+    }
+
     if (browser) {
       queues = [];
+      deleteButtonLabel = "";
       localStorage.removeItem("fifo");
     }
   };
@@ -29,12 +36,15 @@
 
 <h2 class="flex justify-between items-center">
   My Queues
-  <button
-    class="filled py-1 text-base font-normal flex items-center gap-2"
-    on:click={handleDeleteAll}
-  >
-    Delete All {@html DangerIcon}
-  </button>
+  {#if queues.length}
+    <button
+      class="filled py-1 text-base font-normal flex items-center gap-2"
+      on:click={handleDeleteAll}
+    >
+      {deleteButtonLabel || "Delete All"}
+      {@html DangerIcon}
+    </button>
+  {/if}
 </h2>
 
 <ul>
