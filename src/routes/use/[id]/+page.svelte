@@ -4,7 +4,7 @@
   import type { ItemType, QueueType } from "$lib/types";
   import { browser } from "$app/environment";
   import Divider from "$lib/Divider.svelte";
-  import { BarsArrowDownIcon, EditIcon } from "$lib/icons";
+  import { BarsArrowDownIcon, EditIcon, RoundArrowDownIcon } from "$lib/icons";
   import { quintOut } from "svelte/easing";
   import { crossfade } from "svelte/transition";
   import { flip } from "svelte/animate";
@@ -18,6 +18,7 @@
   items = items.map((item) => ({ ...item, count: 0 }));
   $: activeItems = items.filter((_, index) => [0, 1].includes(index));
   $: inactiveItems = items.filter((_, index) => ![0, 1].includes(index));
+  let states: ItemType[][] = [];
 
   // Utils
   const syncWithLocalStorage = () => {
@@ -50,6 +51,7 @@
 
   // Handlers
   const handleSendLast = (index: number) => {
+    states = [...states, items];
     const itemToBeMoved = items[index];
     const newItems = items.filter((_: ItemType, i: number) => i !== index);
     items = [...newItems, itemToBeMoved];
@@ -62,15 +64,31 @@
       item.id === id ? { ...item, count: item.count + 1 } : item
     );
   };
+
+  const handleUndo = () => {
+    const lastState = states.pop();
+
+    if (lastState) {
+      items = lastState;
+      browser && syncWithLocalStorage();
+    }
+  };
 </script>
 
 <Divider />
 
-<div class="flex items-center gap-2">
-  <h2>{name ?? "Loading..."}</h2>
-  <button on:click={() => goto(`/edit/${id}`)}>
-    {@html EditIcon}
-  </button>
+<div class="flex justify-between items-center">
+  <div class="flex items-center gap-2">
+    <h2>{name ?? "Loading..."}</h2>
+    <button on:click={() => goto(`/edit/${id}`)}>
+      {@html EditIcon}
+    </button>
+  </div>
+  {#if states.length}
+    <button class="flex items-center gap-2" on:click={handleUndo}>
+      Undo {@html RoundArrowDownIcon}
+    </button>
+  {/if}
 </div>
 
 <ul class="flex flex-col gap-2">
