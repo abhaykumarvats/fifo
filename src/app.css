@@ -23,3 +23,17 @@
     @apply inline-block text-center text-xl rounded-full p-3 text-orange-600 bg-orange-50 border-4 border-orange-600;
   }
 }
+
+#nprogress .bar {
+  background: #ea580c;
+  height: 4px;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #ea580c, 0 0 5px #ea580c;
+}
+
+#nprogress .spinner-icon {
+  border-top-color: #ea580c;
+  border-left-color: #ea580c;
+}
