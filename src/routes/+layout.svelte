@@ -1,5 +1,14 @@
 <script>
+  import { afterNavigate, beforeNavigate } from "$app/navigation";
+  import nProgress from "nprogress";
+
+  // Styles
+  import "nprogress/nprogress.css";
   import "../app.css";
+
+  // Lifecycle
+  beforeNavigate(() => nProgress.start());
+  afterNavigate(() => nProgress.done());
 </script>
 
 <header class="p-4">
