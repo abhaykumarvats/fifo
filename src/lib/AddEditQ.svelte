@@ -100,7 +100,9 @@
   };
 
   const handleDrop = (event: DragEvent, targetIndex: number) => {
+    event.preventDefault();
     if (!event.dataTransfer) return;
+
     const startIndex = parseInt(event.dataTransfer.getData("text/plain"));
     if (startIndex === targetIndex) return;
 
