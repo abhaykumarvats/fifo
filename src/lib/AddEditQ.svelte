@@ -4,7 +4,13 @@
   import { browser } from "$app/environment";
   import type { ItemType, QueueType } from "$lib/types";
   import { slide } from "svelte/transition";
-  import { CrossIcon, PlusIcon, SaveIcon, ThreeBarsIcon } from "./icons";
+  import {
+    CrossIcon,
+    EditIcon,
+    PlusIcon,
+    SaveIcon,
+    ThreeBarsIcon,
+  } from "./icons";
 
   // Props
   export let editMode = false;
@@ -109,6 +115,16 @@
 
     items = newItems;
   };
+
+  const handleItemEdit = (id: string, value: string) => {
+    const newValue = window && window.prompt(`Edit Item Name`, value);
+    if (!newValue) return;
+
+    items = items.map((item) => {
+      if (item.id === id) return { ...item, value: newValue };
+      return item;
+    });
+  };
 </script>
 
 <input
@@ -131,8 +147,14 @@
         transition:slide|local
       >
         <span class="font-bold flex items-center gap-2">
-          <span class="cursor-move" data-icon>{@html ThreeBarsIcon}</span>
+          <span class="cursor-move"> {@html ThreeBarsIcon}</span>
           {value}
+          <button
+            class="cursor-pointer"
+            on:click={() => handleItemEdit(id, value)}
+          >
+            {@html EditIcon}
+          </button>
         </span>
         <button
           class="flex items-center gap-2"
