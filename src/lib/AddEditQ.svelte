@@ -53,8 +53,8 @@
   const handleItemAdd = () => {
     if (!newItemValue) return;
 
-    if (newItemValue.length > 10) {
-      error = "item name must be less than 10 characters";
+    if (newItemValue.length > 5) {
+      error = "item name must be less than 5 characters";
       return;
     }
 
@@ -119,8 +119,9 @@
   };
 
   const handleItemEdit = (id: string, value: string) => {
-    const newValue = window && window.prompt(`Edit Item Name`, value);
-    if (!newValue) return;
+    const newValue =
+      window && window.prompt(`Edit Item Name (Max 5 Characters)`, value);
+    if (!newValue || newValue.length > 5) return;
 
     items = items.map((item) => {
       if (item.id === id) return { ...item, value: newValue };
