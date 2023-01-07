@@ -4,7 +4,7 @@
   import { browser } from "$app/environment";
   import type { ItemType, QueueType } from "$lib/types";
   import { slide } from "svelte/transition";
-  import { CrossIcon, PlusIcon, SaveIcon } from "./icons";
+  import { CrossIcon, PlusIcon, SaveIcon, ThreeBarsIcon } from "./icons";
 
   // Props
   export let editMode = false;
@@ -86,6 +86,29 @@
     browser && syncWithLocalStorage();
     goto("/");
   };
+
+  const handleDrag = (event: DragEvent, startIndex: number) => {
+    if (!event.dataTransfer) return;
+    event.dataTransfer.setData("text/plain", `${startIndex}`);
+    event.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDrop = (event: DragEvent, targetIndex: number) => {
+    if (!event.dataTransfer) return;
+    const startIndex = parseInt(event.dataTransfer.getData("text/plain"));
+    if (startIndex === targetIndex) return;
+
+    const newItems = items;
+    if (startIndex < targetIndex) {
+      newItems.splice(targetIndex + 1, 0, newItems[startIndex]);
+      newItems.splice(startIndex, 1);
+    } else {
+      newItems.splice(targetIndex, 0, newItems[startIndex]);
+      newItems.splice(startIndex + 1, 1);
+    }
+
+    items = newItems;
+  };
 </script>
 
 <input
@@ -98,12 +121,19 @@
 
 {#if items.length}
   <ul class="flex flex-col gap-2 ml-8" transition:slide|local>
-    {#each items as { id, value } (id)}
+    {#each items as { id, value }, index (id)}
       <li
         class="outlined flex items-center justify-between"
+        draggable="true"
+        on:dragstart={(event) => handleDrag(event, index)}
+        on:dragover={(event) => event.preventDefault()}
+        on:drop={(event) => handleDrop(event, index)}
         transition:slide|local
       >
-        <span class="font-bold">{value}</span>
+        <span class="font-bold flex items-center gap-2">
+          <span class="cursor-move" data-icon>{@html ThreeBarsIcon}</span>
+          {value}
+        </span>
         <button
           class="flex items-center gap-2"
           on:click={() => handleItemDelete(id)}
