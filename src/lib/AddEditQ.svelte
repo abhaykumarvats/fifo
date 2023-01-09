@@ -55,7 +55,7 @@
     if (!newItemValue) return;
 
     if (newItemValue.length > 5) {
-      error = "item name must be less than 5 characters";
+      error = $labels.ITEM_LESS_THAN_5_ERROR;
       return;
     }
 
@@ -76,17 +76,17 @@
 
   const handleQueueSave = () => {
     if (!name) {
-      error = "please enter queue name";
+      error = $labels.ENTER_QUEUE_NAME_ERROR;
       return;
     }
 
     if (name.length > 10) {
-      error = "queue name must be less than 10 characters";
+      error = $labels.QUEUE_LESS_THAN_10_ERROR;
       return;
     }
 
     if (!items.length) {
-      error = "please add atleast one item";
+      error = $labels.ITEM_ATLEAST_ONE_ERROR;
       return;
     }
 
