@@ -15,6 +15,10 @@
     @apply text-2xl font-semibold;
   }
 
+  select {
+    @apply bg-orange-50;
+  }
+
   .filled {
     @apply inline-block text-center text-xl bg-orange-600 text-orange-50 rounded-full p-3;
   }
@@ -24,6 +28,7 @@
   }
 }
 
+/* Progress bar */
 #nprogress .bar {
   background: #ea580c;
   height: 4px;
