@@ -7,6 +7,7 @@
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
   import type { QueueType } from "$lib/types";
+  import { labels } from "$lib/stores";
 
   // Props
   export let data: PageData;
@@ -33,7 +34,7 @@
   // Handlers
   const handleDelete = () => {
     if (!deleteButtonLabel) {
-      deleteButtonLabel = "Sure?";
+      deleteButtonLabel = $labels.SURE;
       return;
     }
 
@@ -45,7 +46,7 @@
 
 <div class="flex justify-between">
   <div class="flex gap-2">
-    <h2>Edit Queue</h2>
+    <h2>{$labels.EDIT_QUEUE}</h2>
     <button class="flex items-center gap-2" on:click={() => goto(`/use/${id}`)}>
       {@html ArrowRightIcon}
     </button>
@@ -54,7 +55,7 @@
     class="filled flex items-center gap-2 py-0 text-base"
     on:click={handleDelete}
   >
-    {deleteButtonLabel || "Delete"}
+    {deleteButtonLabel || $labels.DELETE}
     {@html DangerIcon}
   </button>
 </div>

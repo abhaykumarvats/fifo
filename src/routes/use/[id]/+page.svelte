@@ -9,6 +9,7 @@
   import { crossfade } from "svelte/transition";
   import { flip } from "svelte/animate";
   import { goto } from "$app/navigation";
+  import { labels } from "$lib/stores";
 
   // Props
   export let data: PageData;
@@ -86,7 +87,8 @@
   </div>
   {#if states.length}
     <button class="flex items-center gap-2" on:click={handleUndo}>
-      Undo {@html RoundArrowDownIcon}
+      {$labels.UNDO}
+      {@html RoundArrowDownIcon}
     </button>
   {/if}
 </div>
@@ -116,7 +118,8 @@
             class="filled py-1 text-sm flex items-center gap-2"
             on:click={() => handleSendLast(index)}
           >
-            Send to Last {@html BarsArrowDownIcon}
+            {$labels.SEND_TO_LAST}
+            {@html BarsArrowDownIcon}
           </button>
         {/if}
       </span>
@@ -140,12 +143,12 @@
 
       <span class="flex items-center">
         {#if index === 0}
-          <span class="text-sm italic mr-2">Up Next</span>
+          <span class="text-sm italic mr-2">{$labels.UP_NEXT}</span>
         {/if}
 
         {#if count}
           <span class="outlined py-1 text-sm border-2">
-            Last Count | {count}
+            {$labels.LAST_COUNT} | {count}
           </span>
         {/if}
       </span>

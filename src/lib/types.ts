@@ -16,3 +16,7 @@ export type QueuesType = QueueType[] | [];
 export type ValuesType = {
   [x: string]: number;
 };
+
+export type LabelsType = {
+  [x: string]: { EN: string; HI: string };
+};

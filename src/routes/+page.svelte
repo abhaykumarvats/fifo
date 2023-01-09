@@ -3,6 +3,7 @@
   import { browser } from "$app/environment";
   import Divider from "$lib/Divider.svelte";
   import { ArrowRightIcon, DangerIcon, EditIcon, PlusIcon } from "$lib/icons";
+  import { labels } from "$lib/stores";
   import type { QueuesType } from "$lib/types";
 
   // State
@@ -16,7 +17,7 @@
   // Handlers
   const handleDeleteAll = () => {
     if (!deleteButtonLabel.length) {
-      deleteButtonLabel = "Sure?";
+      deleteButtonLabel = $labels.SURE;
       return;
     }
 
@@ -29,19 +30,20 @@
 </script>
 
 <a class="filled w-full flex items-center gap-2 justify-center" href="/new">
-  New {@html PlusIcon}
+  {$labels.NEW}
+  {@html PlusIcon}
 </a>
 
 <Divider />
 
 <h2 class="flex justify-between items-center">
-  My Queues
+  {$labels.MY_QUEUES}
   {#if queues.length}
     <button
       class="filled py-1 text-base font-normal flex items-center gap-2"
       on:click={handleDeleteAll}
     >
-      {deleteButtonLabel || "Delete All"}
+      {deleteButtonLabel || $labels.DELETE_ALL}
       {@html DangerIcon}
     </button>
   {/if}
@@ -51,16 +53,18 @@
   {#each queues as { id, name } (id)}
     <li class="outlined flex items-center justify-between mb-4">
       <a class="flex items-center gap-2" href="/edit/{id}">
-        {@html EditIcon} Edit
+        {@html EditIcon}
+        {$labels.EDIT}
       </a>
 
       <span class="font-bold">{name}</span>
 
       <a class="flex items-center gap-2" href="/use/{id}">
-        Use {@html ArrowRightIcon}
+        {$labels.USE}
+        {@html ArrowRightIcon}
       </a>
     </li>
   {:else}
-    <li class="outlined w-full italic">No Queues Found</li>
+    <li class="outlined w-full italic">{$labels.NO_QUEUES_FOUND}</li>
   {/each}
 </ul>

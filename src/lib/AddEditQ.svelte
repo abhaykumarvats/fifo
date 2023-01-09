@@ -11,6 +11,7 @@
     SaveIcon,
     ThreeBarsIcon,
   } from "./icons";
+  import { labels } from "./stores";
 
   // Props
   export let editMode = false;
@@ -54,7 +55,7 @@
     if (!newItemValue) return;
 
     if (newItemValue.length > 5) {
-      error = "item name must be less than 5 characters";
+      error = $labels.ITEM_LESS_THAN_5_ERROR;
       return;
     }
 
@@ -75,17 +76,17 @@
 
   const handleQueueSave = () => {
     if (!name) {
-      error = "please enter queue name";
+      error = $labels.ENTER_QUEUE_NAME_ERROR;
       return;
     }
 
     if (name.length > 10) {
-      error = "queue name must be less than 10 characters";
+      error = $labels.QUEUE_LESS_THAN_10_ERROR;
       return;
     }
 
     if (!items.length) {
-      error = "please add atleast one item";
+      error = $labels.ITEM_ATLEAST_ONE_ERROR;
       return;
     }
 
@@ -119,8 +120,7 @@
   };
 
   const handleItemEdit = (id: string, value: string) => {
-    const newValue =
-      window && window.prompt(`Edit Item Name (Max 5 Characters)`, value);
+    const newValue = window && window.prompt($labels.EDIT_ITEM_NAME, value);
     if (!newValue || newValue.length > 5) return;
 
     items = items.map((item) => {
@@ -133,7 +133,7 @@
 <input
   class="outlined focus:outline-none text-left py-1"
   type="text"
-  placeholder="Enter Queue Name"
+  placeholder={$labels.ENTER_QUEUE_NAME}
   bind:value={name}
   on:keypress={({ key }) => key === "Enter" && newItemInput.focus()}
 />
@@ -163,7 +163,8 @@
           class="flex items-center gap-2"
           on:click={() => handleItemDelete(id)}
         >
-          Remove {@html CrossIcon}
+          {$labels.REMOVE}
+          {@html CrossIcon}
         </button>
       </li>
     {/each}
@@ -174,7 +175,7 @@
   <input
     class="outlined w-full focus:outline-none text-left py-1"
     type="text"
-    placeholder="Enter Item"
+    placeholder={$labels.ENTER_ITEM_NAME}
     bind:this={newItemInput}
     bind:value={newItemValue}
     on:keypress={({ key }) => key === "Enter" && handleItemAdd()}
@@ -183,7 +184,8 @@
     class="filled w-fit py-1 flex items-center gap-2"
     on:click={handleItemAdd}
   >
-    Add {@html PlusIcon}
+    {$labels.ADD}
+    {@html PlusIcon}
   </button>
 </div>
 
@@ -193,14 +195,15 @@
     type="checkbox"
     bind:checked={showCounter}
   />
-  Add Counter
+  {$labels.ADD_COUNTER}
 </label>
 
 <button
   class="filled w-full flex items-center justify-center gap-2"
   on:click={handleQueueSave}
 >
-  Save {@html SaveIcon}
+  {$labels.SAVE}
+  {@html SaveIcon}
 </button>
 {#if error}
   <p class="text-red-500 capitalize text-center">{error}</p>
