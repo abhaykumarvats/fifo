@@ -31,7 +31,7 @@ export const LABELS: LabelsType = {
   DELETE: { EN: "Delete", HI: "पंक्ति हटाएँ" },
   ITEM_LESS_THAN_5_ERROR: {
     EN: "Item Name Must Be Less Than 5 Characters",
-    HI: "वस्तु का नाम 5 अक्षरों से काम का होना चाहिए",
+    HI: "वस्तु का नाम 5 अक्षरों से कम का होना चाहिए",
   },
   ENTER_QUEUE_NAME_ERROR: {
     EN: "Please Enter Queue Name",
@@ -39,7 +39,7 @@ export const LABELS: LabelsType = {
   },
   QUEUE_LESS_THAN_10_ERROR: {
     EN: "Queue Name Must Be Less Than 10 Characters",
-    HI: "पंक्ति का नाम 10 अक्षरों से काम का होना चाहिए",
+    HI: "पंक्ति का नाम 10 अक्षरों से कम का होना चाहिए",
   },
   ITEM_ATLEAST_ONE_ERROR: {
     EN: "Please Add Atleast One Item",
