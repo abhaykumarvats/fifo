@@ -26,10 +26,6 @@
   let showCounter = queueShowCounter;
   let newItemInput: HTMLInputElement;
   let newItemValue = "";
-  let error = "";
-
-  // Reactive state
-  $: if (name || items.length) error = "";
 
   // Utils
   const syncWithLocalStorage = () => {
@@ -55,7 +51,7 @@
     if (!newItemValue) return;
 
     if (newItemValue.length > 5) {
-      error = $labels.ITEM_LESS_THAN_5_ERROR;
+      browser && window.alert($labels.ITEM_LESS_THAN_5_ERROR);
       return;
     }
 
@@ -76,17 +72,17 @@
 
   const handleQueueSave = () => {
     if (!name) {
-      error = $labels.ENTER_QUEUE_NAME_ERROR;
+      browser && window.alert($labels.ENTER_QUEUE_NAME_ERROR);
       return;
     }
 
     if (name.length > 10) {
-      error = $labels.QUEUE_LESS_THAN_10_ERROR;
+      browser && window.alert($labels.QUEUE_LESS_THAN_10_ERROR);
       return;
     }
 
     if (!items.length) {
-      error = $labels.ITEM_ATLEAST_ONE_ERROR;
+      browser && window.alert($labels.ITEM_ATLEAST_ONE_ERROR);
       return;
     }
 
@@ -205,6 +201,3 @@
   {$labels.SAVE}
   {@html SaveIcon}
 </button>
-{#if error}
-  <p class="text-red-500 capitalize text-center">{error}</p>
-{/if}
