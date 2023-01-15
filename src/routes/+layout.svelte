@@ -28,7 +28,9 @@
   <slot />
 </main>
 
-<footer class="py-2 fixed bottom-0 bg-orange-50 w-full text-center text-xs">
+<footer
+  class="py-2 fixed bottom-0 bg-orange-50 dark:bg-stone-900 w-full text-center text-xs"
+>
   {#if $appLanguage === "EN"}
     Made with
     <span class="cursor-help" title="🧡 = SvelteKit + Tailwind + TypeScript">

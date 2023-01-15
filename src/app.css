@@ -4,7 +4,7 @@
 
 @layer base {
   html {
-    @apply bg-orange-50 text-orange-600;
+    @apply bg-orange-50 dark:bg-stone-900 text-orange-600 dark:text-orange-50;
   }
 
   h1 {
@@ -16,15 +16,15 @@
   }
 
   select {
-    @apply bg-orange-50;
+    @apply bg-orange-50 dark:bg-stone-900;
   }
 
   .filled {
-    @apply inline-block text-center text-xl bg-orange-600 text-orange-50 rounded-full p-3;
+    @apply inline-block text-center text-xl bg-orange-600 dark:bg-orange-50 text-orange-50 dark:text-stone-900 rounded-full p-3;
   }
 
   .outlined {
-    @apply inline-block text-center text-xl rounded-full p-3 text-orange-600 bg-orange-50 border-4 border-orange-600;
+    @apply inline-block text-center text-xl rounded-full p-3 text-orange-600 dark:text-orange-50 bg-orange-50 dark:bg-stone-900 border-4 border-orange-600 dark:border-orange-50;
   }
 }
 
@@ -41,4 +41,19 @@
 #nprogress .spinner-icon {
   border-top-color: #ea580c;
   border-left-color: #ea580c;
+}
+
+@media (prefers-color-scheme: dark) {
+  #nprogress .bar {
+    background: #fff7ed;
+  }
+
+  #nprogress .peg {
+    box-shadow: 0 0 10px #fff7ed, 0 0 5px #fff7ed;
+  }
+
+  #nprogress .spinner-icon {
+    border-top-color: #fff7ed;
+    border-left-color: #fff7ed;
+  }
 }
